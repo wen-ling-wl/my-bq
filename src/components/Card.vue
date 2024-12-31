@@ -1,22 +1,50 @@
 <template>
-  <div class="bg-[#e8f0f8] rounded-2xl p-4 flex flex-col justify-between aspect-square shadow-md">
+  <div class="bg-white dark:bg-dark-card rounded-2xl p-4 flex flex-col justify-between shadow-md hover:shadow-lg transition-shadow duration-300">
     <div>
-      <h3 class="text-lg font-semibold text-[#42536d]">{{ title }}</h3>
-      <p class="text-4xl font-bold text-[#42536d] mt-2">{{ days }}<span class="text-base font-normal ml-1">天</span></p>
-    </div>
-    <div class="flex justify-between items-end">
-      <span class="text-sm text-gray-500">{{ date }}</span>
-      <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-        <Clock class="text-[#42536d]" size="32" />
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-xs text-gray-500 dark:text-dark-text-secondary">{{ category }}</span>
+        <component :is="icon" class="text-blue-500" size="20" />
       </div>
+      <h3 class="text-lg font-semibold text-gray-800 dark:text-dark-text">{{ title }}</h3>
+      <p class="text-sm text-gray-600 dark:text-dark-text-secondary mt-2">{{ description }}</p>
+    </div>
+    <div class="mt-4">
+      <button 
+        @click="handleClick"
+        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300">
+        {{ buttonText }}
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-defineProps(['title', 'date', 'days', 'description', 'buttonText'])
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const props = defineProps({
+  title: String,
+  description: String,
+  buttonText: String,
+  icon: {
+    type: String,
+    default: 'Box'
+  },
+  category: String,
+  link: String
+})
+
+const handleClick = () => {
+  if (props.link) {
+    if (props.link.startsWith('http')) {
+      window.open(props.link, '_blank')
+    } else {
+      router.push(props.link)
+    }
+  }
+}
 </script>
 
-<style>
+<style scoped>
 /* 可以根据需要添加样式 */
 </style> 
